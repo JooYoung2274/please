@@ -5,7 +5,7 @@ import '../styles/global.scss';
 import Head from 'next/head';
 import Link from 'next/link';
 import Input from 'antd/lib/input/Input';
-import { Layout, Button } from 'antd';
+import { Layout, Button, Select } from 'antd';
 import Home from './home';
 
 const ipcRenderer = electron.ipcRenderer;
@@ -24,7 +24,7 @@ function MyApp({ Component, pageProps }) {
         <title>테에스으트으</title>
       </Head>
       <Content>
-        <Home></Home>
+        <Component {...pageProps} />
       </Content>
     </React.Fragment>
   );

@@ -39,9 +39,15 @@ ipcMain.on('message', async (event, arg) => {
 
 ipcMain.on('saveFile', (evt, arg) => {
   console.log(arg);
-  const dataFilePath = `${__dirname}/userData.json`;
+
+  if (arg.accessKey === '' || arg.secretKey === '') {
+    evt.sender.send('reply', { status: 'fail' });
+    return;
+  }
+
+  const dataFilePath = `${__dirname}/private_user_data.json`;
   const userData = JSON.stringify(arg, null, 2);
 
   fs.writeFileSync(dataFilePath, userData, 'utf8');
-  evt.sender.send('reply', '서버가 보냄');
+  evt.sender.send('reply', { status: 'success' });
 });
