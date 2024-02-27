@@ -51,3 +51,14 @@ ipcMain.on('saveFile', (evt, arg) => {
   fs.writeFileSync(dataFilePath, userData, 'utf8');
   evt.sender.send('reply', { status: 'success' });
 });
+
+ipcMain.on('getSavedFile', (evt, arg) => {
+  const dataFilePath = `${__dirname}/private_user_data.json`;
+
+  const userData = fs.readFileSync(dataFilePath, 'utf8');
+  if (userData === '') {
+    evt.sender.send('reply', { status: 'fail' });
+    return;
+  }
+  evt.sender.send('reply', { status: 'success', userData: JSON.parse(userData) });
+});
