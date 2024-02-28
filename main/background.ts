@@ -52,7 +52,7 @@ ipcMain.on('saveFile', (evt, arg) => {
   evt.sender.send('reply', { status: 'success' });
 });
 
-ipcMain.on('getSavedFile', (evt, arg) => {
+ipcMain.on('getSavedUserDataFile', (evt, arg) => {
   const dataFilePath = `${__dirname}/private_user_data.json`;
 
   const userData = fs.readFileSync(dataFilePath, 'utf8');
@@ -61,4 +61,23 @@ ipcMain.on('getSavedFile', (evt, arg) => {
     return;
   }
   evt.sender.send('reply', { status: 'success', userData: JSON.parse(userData) });
+});
+
+ipcMain.on('order', (evt, arg) => {
+  console.log(arg);
+  const dataFilePath = `${__dirname}/assets_data.json`;
+  const assetsData = JSON.stringify(arg, null, 2);
+  fs.writeFileSync(dataFilePath, assetsData, 'utf8');
+});
+
+ipcMain.on('getSavedAssetsDataFile', (evt, arg) => {
+  const dataFilePath = `${__dirname}/assets_data.json`;
+
+  const assetsData = fs.readFileSync(dataFilePath, 'utf8');
+  console.log(assetsData);
+  if (assetsData === '') {
+    evt.sender.send('assetsReturn', { status: 'fail' });
+    return;
+  }
+  evt.sender.send('assetsReturn', { status: 'success', assetsData: JSON.parse(assetsData) });
 });
